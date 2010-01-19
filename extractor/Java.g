@@ -172,29 +172,29 @@ local_variable_declarator[dummy_variable, local_variables, method]
         local_variable.type = dummy_variable.type
       }
       ('[' ']' { local_variable.type << "[]" })*
-      (local_variable_initialization[method])? { local_variable.was_initialized }
+      (local_variable_initialization[method] { local_variable.was_initialized } )?
       {
         local_variables << local_variable
       }
     ;
 
 local_variable_initialization[method]
-    : '=' (constructor_call[method] | method_expression[method]*)
+    : '=' (constructor_call[method] | expression[method]*)
     ;
 
 constructor_call[method]
-    : 'new' IDENTIFIER '(' method_expression[method]* ')'
+    : 'new' IDENTIFIER '(' expression[method]* ')'
     {
        $method.add_method_call( "#{$IDENTIFIER.text} constructor", $IDENTIFIER.line)
     }
     ;
 
 return_expression[method]
-    : RETURN ( method_expression[method] )* ';'
+    : RETURN ( expression[method] )* ';'
     ;
 
 method_call[method]
-    : called_method_name[method] '(' arguments[method]* ')' ';'
+    : called_method_name[method] '(' arguments[method]? ')' ';'
     ;
 
 called_method_name[method]
@@ -220,15 +220,7 @@ other_arguments[method]
     ;
 
 argument[method]
-@init {
-    variable_name = ""
-}
-    : ( 'this''.' { variable_name << "this." } )?
-      ( IDENTIFIER {
-        variable_name << $IDENTIFIER.text
-        $method.add_use_of(variable_name, $IDENTIFIER.line)
-      } )
-    | any_expression[method]
+    : expression[method]+
     ;
 
 fragment_of_called_method_name[method_name]
@@ -236,7 +228,7 @@ fragment_of_called_method_name[method_name]
     ;
 
 assign_operation[method]
-    : variable_name[method] assign_operator ( method_expression[method] )* ';'
+    : variable_name[method] assign_operator ( expression[method] )* ';'
     ;
 
 variable_name[method]
@@ -249,13 +241,33 @@ variable_name[method]
     }
     ;
 
-method_expression[method]
-    : IDENTIFIER { $method.add_use_of($IDENTIFIER.text, $IDENTIFIER.line) }
+expression[method]
+    : variable_or_method_use[method]
     | any_expression[method]
     ;
 
+variable_or_method_use[method]
+@init {
+    name = ""
+    is_method = false
+}
+    : ( 'this''.' { name << "this." } )?
+      ( IDENTIFIER {
+        name << $IDENTIFIER.text
+      } )
+      ( '(' ')' { is_method = true} )?
+    {
+      if is_method
+         $method.add_method_call(name, $IDENTIFIER.line)
+
+      else
+         $method.add_use_of(name, $IDENTIFIER.line)
+      end
+    }
+    ;
+
 any_expression[method]
-    : '(' ( method_expression[method] )* ')'
+    :'(' ( expression[method] )+ ')'
     | NUMBER
     | expression_operator
     | double_quoted_expression

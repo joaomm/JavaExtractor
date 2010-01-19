@@ -6,19 +6,20 @@ protected class ClassA{
     protected float protected_attribute;
 
     private double my_method () {
-
+        int y;
+        void_method(typeless_method());
     }
 
     public static ClassB<String> classB_method (final int x) {
-        ClassC a = new ClassC();
+        ClassC c = new ClassC();
     }
 
     private void another_method(int y) {
-        int i = 1, j = 2, f = 2;
+        int i = 1, j = 2, f = this.my_attribute;
         return (y == i || 3 + y < 1 && j >= 2)? 3 : j + 2;
     }
 
-    private typeless_method(int x) {
+    private void typeless_method(int x) {
         final double y[];
         return (y[1] + 2)/5 * (12 + x) % x;
     }

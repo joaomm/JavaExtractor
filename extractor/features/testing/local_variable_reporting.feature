@@ -6,7 +6,7 @@ Feature: reporting methods informations
     Then our parser must report the existence of "local variable <local_variable>" with "type <type>"
   Examples:
     | file    | local_variable  | type       |
-    | ClassA  |       a         | ClassC     |
+    | ClassA  |       c         | ClassC     |
     | ClassA  |       i         | int        |
     | ClassA  |       j         | int        |
     | ClassA  |       y         | double\[\] |

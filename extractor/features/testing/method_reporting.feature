@@ -31,10 +31,10 @@ Feature: reporting methods informations
   Scenario Outline: reporting local variables
     Given I am in .
     When I run "ruby main.rb" with "testing/<file>.java"
-    Then our parser must report the existence of "<method>" with "local variable <local_variable>"
+    Then our parser must report that "<method>" uses "local variable" "<local_variable>"
   Examples:
     | file    | method          | local_variable  |
-    | ClassA  | classB_method   |       a         |
+    | ClassA  | classB_method   |       c         |
     | ClassA  | another_method  |       i         |
     | ClassA  | another_method  |       j         |
     | ClassA  | typeless_method |       y         |
@@ -43,22 +43,22 @@ Feature: reporting methods informations
   Scenario Outline: reporting use of variables in return expressions
     Given I am in .
     When I run "ruby main.rb" with "testing/<file>.java"
-    Then our parser must report the existence of "<method>" with "uses <type> <variable>"
+    Then our parser must report that "<method>" uses "<type>" "<variable>"
   Examples:
     | file    | method          | type           | variable     |
-    | ClassA  | classB_method   | parameter      |      y       |
-    | ClassA  | classB_method   | local variable |      j       |
     | ClassA  | another_method  | parameter      |      y       |
+    | ClassA  | another_method  | local variable |      j       |
     | ClassA  | typeless_method | local variable |      y       |
     | ClassA  | typeless_method | parameter      |      x       |
 
   Scenario Outline: reporting use of variables in assignments
     Given I am in .
     When I run "ruby main.rb" with "testing/<file>.java"
-    Then our parser must report the existence of "<method>" with "uses <type> <variable>"
+    Then our parser must report that "<method>" uses "<type>" "<variable>"
   Examples:
     | file    | method        | type           | variable     |
-    | ClassA  | classB_method | local variable |      i       |
+    | ClassA  | classB_method | local variable |      c       |
+    | ClassA  | another_method| attribute      | my_attribute |
     | ClassA  | void_method   | local variable |      i       |
     | ClassA  | void_method   | local variable |      k       |
     | ClassA  | void_method   | local variable |      l       |
@@ -68,16 +68,18 @@ Feature: reporting methods informations
   Scenario Outline: reporting method calls
     Given I am in .
     When I run "ruby main.rb" with "testing/<file>.java"
-    Then our parser must report the existence of "<method>" with "uses method <called_method>"
+    Then our parser must report that "<method>" uses the method "<called_method>"
   Examples:
     | file    | method     | called_method      |
     | ClassA  | say_hello  | System.out.println |
     | ClassA  | say_hello  | typeless_method    |
+    | ClassA  | my_method  | void_method        |
+    | ClassA  | my_method  | typeless_method    |
 
   Scenario Outline: reporting use of variables when used as arguments to method call
     Given I am in .
     When I run "ruby main.rb" with "testing/<file>.java"
-    Then our parser must report the existence of "<method>" with "uses <type> <variable>"
+    Then our parser must report that "<method>" uses "<type>" "<variable>"
   Examples:
     | file    | method    | type           | variable            |
     | ClassA  | say_hello | attribute      | protected_attribute |

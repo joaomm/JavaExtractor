@@ -38,7 +38,7 @@ Feature: reporting methods informations
   Scenario Outline: reporting parameters
     Given I am in .
     When I run "ruby main.rb" with "hello_world/<file>.java"
-    Then our parser must report the existence of "method <method>" with "parameter <parameter>"
+    Then our parser must report the existence of "<method>" with "parameter <parameter>"
   Examples:
     | file | method | parameter  |
     | Main | main   |   args     |
@@ -46,7 +46,7 @@ Feature: reporting methods informations
   Scenario Outline: reporting local variables
     Given I am in .
     When I run "ruby main.rb" with "hello_world/<file>.java"
-    Then our parser must report the existence of "method <method>" with "local variable <local_variable>"
+    Then our parser must report that "<method>" uses "local variable" "<local_variable>"
   Examples:
     | file | method | local_variable |
     | Main | main   |   hello1       |
@@ -55,7 +55,7 @@ Feature: reporting methods informations
   Scenario Outline: reporting use of variables
     Given I am in .
     When I run "ruby main.rb" with "hello_world/<file>.java"
-    Then our parser must report the existence of "method <method>" with "uses <kind> <variable>"
+    Then our parser must report that "<method>" uses "<kind>" "<variable>"
   Examples:
     | file       | method         | kind           | variable |
     | HelloWorld | HelloWorld     | attribute      | _id      |
@@ -69,7 +69,7 @@ Feature: reporting methods informations
   Scenario Outline: reporting method calls
     Given I am in .
     When I run "ruby main.rb" with "hello_world/<file>.java"
-    Then our parser must report the existence of "<method>" with "uses method <called_method>"
+    Then our parser must report that "<method>" uses the method "<called_method>"
   Examples:
     | file       | method         | called_method          |
     | HelloWorld | say            | System.out.println     |

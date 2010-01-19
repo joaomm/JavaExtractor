@@ -22,5 +22,11 @@ doc = 'require "#{ROOT}/model/class_definition"' + "\n" +
       'require "#{ROOT}/model/method_definition"' + "\n\n" + text
 File.open("JavaParser.rb", 'w') {|f| f.write(doc) }
 
-system 'cucumber features/'
+feature = ARGV[0]
+
+if feature
+  system "cucumber features/#{feature}"
+else
+  system "cucumber features/testing; cucumber features/hello_world"
+end
 
