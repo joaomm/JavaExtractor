@@ -120,7 +120,7 @@ method_definition[class_def]
     method = MethodDefinition.new
 }
     :
-    modifier[method] (type[method])? IDENTIFIER parameters[method] method_body[method] {
+    modifier[method] (type[method])? IDENTIFIER parameters[method] (method_body[method]|';') {
         method.name = $IDENTIFIER.text
         method.line = $IDENTIFIER.line
         $class_def.add_member(method)
@@ -252,9 +252,8 @@ variable_or_method_use[method]
     is_method = false
 }
     : ( 'this''.' { name << "this." } )?
-      ( IDENTIFIER {
-        name << $IDENTIFIER.text
-      } )
+      ( IDENTIFIER { name << $IDENTIFIER.text } )
+      fragment_of_variable_or_method_name[name]*
       ( '(' ')' { is_method = true} )?
     {
       if is_method
@@ -264,6 +263,10 @@ variable_or_method_use[method]
          $method.add_use_of(name, $IDENTIFIER.line)
       end
     }
+    ;
+
+fragment_of_variable_or_method_name[name]
+    : '.' IDENTIFIER { $name << ".#{$IDENTIFIER.text}"}
     ;
 
 any_expression[method]
@@ -299,12 +302,12 @@ assign_operator
 
 expression_operator
     : '+' | '-' | '*' | '/' | '%' | '=' | '?' | ':' | '&'
-    | '|' | '^' | '>' | '<' | '!' | '.' | '[' | ']'
+    | '|' | '^' | '>' | '<' | '!' | '[' | ']'
     ;
 
 
 quoted_operator
-    : '(' | ')' | '{' | '}' | '\\' | ';' | ',' | '~' | '@' | '#' | '$' | '\\"' | '\\\''
+    : '(' | ')' | '{' | '}' | '\\' | ';' | ',' | '~' | '@' | '#' | '$' | '\\"' | '\\\'' | '.'
     ;
 
 

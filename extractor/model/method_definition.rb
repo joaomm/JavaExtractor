@@ -8,7 +8,7 @@ class MethodDefinition < MemberDefinition
     @parameters = []
     @local_variables = []
     @uses = []
-    @type = 'void'
+    @type = 'constructor'
   end
 
   def add_parameter(parameter)

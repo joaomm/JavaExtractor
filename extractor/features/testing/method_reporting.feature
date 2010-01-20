@@ -4,9 +4,10 @@ Feature: reporting methods informations
     When I run "ruby main.rb" with "testing/<file>.java"
     Then our parser must report the existence of "method <method>"
   Examples:
-    | file   | method         |
-    | ClassA | my_method      |
-    | ClassA | classB_method  |
+    | file   | method          |
+    | ClassA | my_method       |
+    | ClassA | classB_method   |
+    | ClassB | abstractMethod |
 
   Scenario Outline: reporting method type
     Given I am in .

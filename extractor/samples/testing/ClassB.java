@@ -7,5 +7,7 @@ class ClassB extends ClassC implements ClassD, ClassE {
     private int array_attribute[] = {1, 2, 3};
 
     public double first, second, third;
+
+      public abstract String abstractMethod();
 }
 

@@ -27,6 +27,6 @@ feature = ARGV[0]
 if feature
   system "cucumber features/#{feature}"
 else
-  system "cucumber features/testing; cucumber features/hello_world"
+  system "cucumber features/testing; cucumber features/hello_world; cucumber features/animals"
 end
 

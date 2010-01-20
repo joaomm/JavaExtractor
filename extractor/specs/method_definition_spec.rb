@@ -25,8 +25,8 @@ describe MethodDefinition do
       @method.parameters[1].name.should == 'another_parameter_name'
     end
 
-    it "should have a initial type void" do
-      @method.type.should == 'void'
+    it "should have a initial type constructor" do
+      @method.type.should == 'constructor'
     end
 
     it "should store the definition of local_variables" do
